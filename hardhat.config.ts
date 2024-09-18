@@ -8,7 +8,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       forking: {
         url: `https://eth-sepolia.g.alchemy.com/v2/${configEnv.ALCHEMY_API_KEY}`,
-        blockNumber: 6716470,
+        // blockNumber: 6716470,
       },
     },
   },
