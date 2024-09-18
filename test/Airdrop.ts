@@ -66,31 +66,26 @@ describe("Airdrop", () => {
       await airdrop.endAirdrop();
       expect(await airdrop.getStatus()).to.equal(false);
     });
-    it("should require Bayc holder to claim", async () => {
-      const { airdrop, baycNft } = await loadFixture(deployAirdrop);
 
-      const balance = await baycNft.balanceOf(config.BAYC_HOLDER);
-      expect(balance).to.equal(0);
+    it("should claim tokens", async () => {
+      const claimAmount = ethers.parseUnits(
+        config.BAYC_HOLDER_CLAIM_AMOUNT.toString(),
+        18
+      );
+      const { airdrop, account1, others, token, impersonatedAccount1 } =
+        await loadFixture(deployAirdrop);
+
+      await airdrop.startAirdrop();
+
+      const balBefore = await token.balanceOf(config.BAYC_HOLDER);
+
+      await airdrop
+        .connect(impersonatedAccount1)
+        .claimAirdrop(claimAmount, config.BAYC_HOLDER_AIRDROP_PROOF);
+
+      const balAfter = await token.balanceOf(config.BAYC_HOLDER);
+
+      expect(balAfter).to.equal(balBefore + claimAmount);
     });
-    // it("should claim tokens", async () => {
-    //   const claimAmount = ethers.parseUnits(
-    //     config.BAYC_HOLDER_CLAIM_AMOUNT.toString(),
-    //     18
-    //   );
-    //   const { airdrop, account1, others, token, impersonatedAccount1 } =
-    //     await loadFixture(deployAirdrop);
-
-    //   await airdrop.startAirdrop();
-
-    //   const balBefore = await token.balanceOf(config.BAYC_HOLDER);
-
-    //   await airdrop
-    //     .connect(impersonatedAccount1)
-    //     .claimAirdrop(claimAmount, config.BAYC_HOLDER_AIRDROP_PROOF);
-
-    //   const balAfter = await token.balanceOf(config.BAYC_HOLDER);
-
-    //   expect(balAfter).to.equal(balBefore + claimAmount);
-    // });
   });
 });

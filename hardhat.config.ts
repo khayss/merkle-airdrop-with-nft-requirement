@@ -7,7 +7,8 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       forking: {
-        url: `https://eth-sepolia.g.alchemy.com/v2/${configEnv.ALCHEMY_API_KEY}`,
+        // url: `https://eth-sepolia.g.alchemy.com/v2/${configEnv.ALCHEMY_API_KEY}`,
+        url: "https://rpc.mevblocker.io",
         // blockNumber: 6716470,
       },
     },
